@@ -29,6 +29,10 @@ public class AdvancedBanMigrator extends JavaPlugin {
 			getLogger().log(Level.WARNING, "Your configuration is invalid. Fix it and try again", ex);
 			return;
 		}
+		if (config.mySqlSettings().isDefault()) {
+			getLogger().info("Please configure your database settings, then restart the server");
+			return;
+		}
 		migrate(dataFolder, config);
 	}
 

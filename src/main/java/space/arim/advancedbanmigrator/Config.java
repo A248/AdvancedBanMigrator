@@ -48,6 +48,10 @@ public interface Config {
 		@ConfDefault.DefaultString("verifyServerCertificate=false&useSSL=false&useUnicode=true&characterEncoding=utf8")
 		String properties();
 
+		default boolean isDefault() {
+			return username().equals("user");
+		}
+
 		default ConnectionSource toConnectionSource() {
 			String jdbcUrl = "jdbc:mysql://" + host() + ":" + port() + "/" + database() + "?" + properties();
 			String username = username();
