@@ -9,12 +9,12 @@ class Migrator {
 
 	private final Connection source;
 	private final Connection destination;
+	private final int batchAmount;
 
-	private static final int BATCH_COUNT = 200;
-
-	Migrator(Connection source, Connection destination) {
+	Migrator(Connection source, Connection destination, int batchAmount) {
 		this.source = source;
 		this.destination = destination;
+		this.batchAmount = batchAmount;
 	}
 
 	void conduct(String table) throws SQLException {
@@ -22,7 +22,7 @@ class Migrator {
 			 PreparedStatement insertStatement = destination.prepareStatement(
 			 		"INSERT INTO " + table + " (id, name, uuid, reason, operator, punishmentType, start, end, calculation) " +
 							"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-			selectStatement.setFetchSize(BATCH_COUNT);
+			selectStatement.setFetchSize(batchAmount);
 			try (ResultSet resultSet = selectStatement.executeQuery()) {
 				int batches = 0;
 				int bufferCount = 0;
@@ -41,7 +41,7 @@ class Migrator {
 						insertStatement.setObject(n + 1, params[n]);
 					}
 					insertStatement.addBatch();
-					if (++bufferCount == BATCH_COUNT) {
+					if (++bufferCount == batchAmount) {
 						bufferCount = 0;
 						System.out.println("Executing batch update " + ++batches);
 						insertStatement.executeBatch();
@@ -52,7 +52,7 @@ class Migrator {
 					insertStatement.executeBatch();
 					destination.commit();
 				}
-				int totalTransferred = batches * BATCH_COUNT + bufferCount;
+				int totalTransferred = batches * batchAmount + bufferCount;
 				System.out.println("Transferred " + totalTransferred + " punishments");
 			}
 		}

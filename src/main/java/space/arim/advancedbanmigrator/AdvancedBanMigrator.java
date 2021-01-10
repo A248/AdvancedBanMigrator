@@ -46,7 +46,7 @@ public class AdvancedBanMigrator extends JavaPlugin {
 		}
 		ConnectionSource hsqldb = () -> DriverManager.getConnection("jdbc:hsqldb:file:" + storage + ";hsqldb.lock_file=false");
 		ConnectionSource mysql = config.mySqlSettings().toConnectionSource();
-		Migration migration = new Migration();
+		Migration migration = new Migration(config.batchAmount());
 		if (config.reverse()) {
 			migration.migrate(mysql, hsqldb);
 		} else {

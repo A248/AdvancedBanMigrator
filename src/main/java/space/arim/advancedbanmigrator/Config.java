@@ -18,6 +18,11 @@ public interface Config {
 	@ConfDefault.DefaultBoolean(false)
 	boolean reverse();
 
+	@ConfComments("The amount of punishments to transfer in a single batch")
+	@ConfDefault.DefaultInteger(200)
+	@ConfKey("batch-amount")
+	int batchAmount();
+
 	@SubSection
 	@ConfKey("mysql-settings")
 	MySqlSettings mySqlSettings();
