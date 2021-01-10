@@ -1,0 +1,5 @@
+name: AdvancedBanMigrator
+main: space.arim.advancedbanmigrator.AdvancedBanMigrator
+author: A248
+version: ${project.version}
+depend: [AdvancedBan]
