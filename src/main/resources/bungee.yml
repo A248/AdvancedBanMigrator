@@ -1,0 +1,5 @@
+name: AdvancedBanMigrator
+main: space.arim.advancedbanmigrator.BungeePlugin
+author: A248
+version: ${project.version}
+depends: [AdvancedBan]

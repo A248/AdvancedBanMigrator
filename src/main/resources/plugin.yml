@@ -1,5 +1,5 @@
 name: AdvancedBanMigrator
-main: space.arim.advancedbanmigrator.AdvancedBanMigrator
+main: space.arim.advancedbanmigrator.BukkitPlugin
 author: A248
 version: ${project.version}
 depend: [AdvancedBan]
