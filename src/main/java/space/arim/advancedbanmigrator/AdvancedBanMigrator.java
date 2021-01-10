@@ -39,7 +39,7 @@ class AdvancedBanMigrator {
 		migrate(dataFolder, config);
 	}
 
-	private void migrate(Path dataFolder, Config config) {
+	void migrate(Path dataFolder, Config config) {
 		Path pluginsFolder = dataFolder.toAbsolutePath().getParent();
 		Path advancedBanData = pluginsFolder.resolve("AdvancedBan").resolve("data");
 		if (!Files.isDirectory(advancedBanData)) {

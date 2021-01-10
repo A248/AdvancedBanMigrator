@@ -5,14 +5,12 @@ import org.assertj.db.type.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.assertj.db.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class MigrationTest {
 
@@ -35,31 +33,8 @@ public class MigrationTest {
 
 	@BeforeEach
 	public void setup() throws SQLException {
-		for (ConnectionSource source : new ConnectionSource[] {from, to}) {
-			for (String table : new String[] {"Punishments", "PunishmentHistory"}) {
-				execute(source,
-						"CREATE TABLE " + table + " (" +
-								"id INTEGER IDENTITY PRIMARY KEY," +
-								"name VARCHAR(16)," +
-								"uuid VARCHAR(35)," +
-								"reason VARCHAR(100)," +
-								"operator VARCHAR(16)," +
-								"punishmentType VARCHAR(16)," +
-								"start BIGINT," +
-								"end BIGINT," +
-								"calculation VARCHAR(50))");
-			}
-		}
-	}
-
-	private void execute(ConnectionSource source, String statement, Object... parameters) throws SQLException {
-		try (Connection conn = source.openConnection();
-			 PreparedStatement prepStmt = conn.prepareStatement(statement)) {
-			for (int n = 0; n < parameters.length; n++) {
-				prepStmt.setObject(n + 1, parameters[n]);
-			}
-			prepStmt.execute();
-		}
+		Queries.createSchema(from);
+		Queries.createSchema(to);
 	}
 
 	@Test
@@ -72,10 +47,10 @@ public class MigrationTest {
 	private void addPunishment(boolean active,
 							   int id, String name, String uuid, String reason, String operator,
 							   String punishmentType, long start, long end) throws SQLException {
-		execute(from, "INSERT INTO PunishmentHistory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		Queries.execute(from, "INSERT INTO PunishmentHistory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				id, name, uuid, reason, operator, punishmentType, start, end, null);
 		if (active) {
-			execute(from, "INSERT INTO Punishments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			Queries.execute(from, "INSERT INTO Punishments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					id, name, uuid, reason, operator, punishmentType, start, end, null);
 		}
 	}
