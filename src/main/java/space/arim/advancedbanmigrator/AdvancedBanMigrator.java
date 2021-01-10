@@ -43,11 +43,6 @@ public class AdvancedBanMigrator extends JavaPlugin {
 		if (!Files.isDirectory(advancedBanData)) {
 			throw new IllegalStateException("AdvancedBan/data does not exist as a directory");
 		}
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException ex) {
-			throw new IllegalStateException("AdvancedBan is not present", ex);
-		}
 		ConnectionSource hsqldb = () -> DriverManager.getConnection("jdbc:hsqldb:file:" + storage + ";hsqldb.lock_file=false");
 		ConnectionSource mysql = config.mySqlSettings().toConnectionSource();
 		Migration migration = new Migration(config.batchAmount());
