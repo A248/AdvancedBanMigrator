@@ -15,6 +15,14 @@ class AdvancedBanMigrator {
 
 	private final Path dataFolder;
 
+	static {
+		try {
+			Class.forName("org.hsqldb.jdbc.JDBCDriver");
+		} catch (ClassNotFoundException ex) {
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
+
 	AdvancedBanMigrator(Path dataFolder) {
 		this.dataFolder = dataFolder;
 	}
