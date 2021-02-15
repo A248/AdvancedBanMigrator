@@ -15,6 +15,7 @@
 		<hsqldb.version>2.5.1</hsqldb.version>
 		<assertj-core.version>3.18.1</assertj-core.version>
 		<assertj-db.version>2.0.2</assertj-db.version>
+		<mariadb-connector.version>2.7.2</mariadb-connector.version>
 	</properties>
 	
 	<licenses>
@@ -158,6 +159,12 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-db</artifactId>
 			<version>${assertj-db.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>${mariadb-connector.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

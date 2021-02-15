@@ -28,7 +28,10 @@ public class AdvancedBanMigratorTest {
 	@BeforeEach
 	public void setup() {
 		dataFolder = pluginsFolder.resolve("AdvancedBanMigrator");
-		core = new AdvancedBanMigrator(dataFolder);
+		core = new AdvancedBanMigrator(dataFolder, new InitDrivers() {
+			@Override
+			void ensureRegistered() { }
+		});
 	}
 
 	@Test

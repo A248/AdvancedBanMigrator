@@ -14,20 +14,20 @@ import java.sql.DriverManager;
 class AdvancedBanMigrator {
 
 	private final Path dataFolder;
+	private final InitDrivers initDrivers;
 
-	static {
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException ex) {
-			throw new ExceptionInInitializerError(ex);
-		}
+	AdvancedBanMigrator(Path dataFolder, InitDrivers initDrivers) {
+		this.dataFolder = dataFolder;
+		this.initDrivers = initDrivers;
 	}
 
 	AdvancedBanMigrator(Path dataFolder) {
-		this.dataFolder = dataFolder;
+		this(dataFolder, new InitDrivers());
 	}
 
 	void run() {
+		initDrivers.ensureRegistered();
+
 		Config config;
 		try {
 			config = new ConfigurationHelper<>(dataFolder, "config.yml",
